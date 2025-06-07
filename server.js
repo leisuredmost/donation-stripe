@@ -22,7 +22,7 @@ app.post("/create-checkout-session", async (req, res) => {
         price_data: {
           currency: "myr",
           product_data: { name: "Donation" },
-          unit_amount: Math.round(amount * 100),
+          unit_amount: amount,
         },
         quantity: 1,
       }],
