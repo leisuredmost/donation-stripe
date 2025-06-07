@@ -1,30 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Donate with Stripe</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      max-width: 600px;
+      margin: 2rem auto;
+      padding: 1rem;
+      text-align: center;
+    }
+    label {
+      display: block;
+      margin: 1rem 0;
+    }
+    button {
+      padding: 0.7rem 1.5rem;
+      font-size: 1rem;
+      border: none;
+      background-color: #635bff;
+      color: white;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #5147f4;
+    }
+  </style>
 </head>
 <body>
-  <h1>Donate to Our Cause</h1>
+  <h1>Support Us</h1>
+  <p>Select an amount and donate with Stripe</p>
+
   <form id="donation-form">
-    <label>Enter amount (MYR):</label>
-    <input type="number" id="amount" min="1" required />
+    <label>
+      <input type="radio" name="amount" value="500" />
+      RM5
+    </label>
+    <label>
+      <input type="radio" name="amount" value="1000" />
+      RM10
+    </label>
+    <label>
+      <input type="radio" name="amount" value="2000" />
+      RM20
+    </label>
     <button type="submit">Donate</button>
   </form>
 
   <script>
-    document.getElementById("donation-form").addEventListener("submit", async (e) => {
+    const form = document.getElementById("donation-form");
+
+    form.addEventListener("submit", async (e) => {
       e.preventDefault();
-      const amount = document.getElementById("amount").value;
 
-      const res = await fetch("https://donation-stripe.onrender.com/create-checkout-session", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ amount })
-      });
+      const selected = document.querySelector('input[name="amount"]:checked');
+      if (!selected) {
+        alert("Please select a donation amount.");
+        return;
+      }
 
-      const data = await res.json();
-      window.location.href = data.url;
+      const selectedAmount = parseInt(selected.value);
+
+      try {
+        const res = await fetch("https://donation-stripe.onrender.com/create-checkout-session", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ amount: selectedAmount })
+        });
+
+        const data = await res.json();
+
+        if (data.url) {
+          window.location.href = data.url;
+        } else {
+          alert("Something went wrong. No redirect URL.");
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        alert("Failed to connect to Stripe.");
+      }
     });
   </script>
 </body>
