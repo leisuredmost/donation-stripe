@@ -25,8 +25,8 @@ app.post("/create-checkout-session", async (req, res) => {
         quantity: 1,
       }],
       mode: "payment",
-      success_url: "https://your-frontend-url.netlify.app/success.html",
-      cancel_url: "https://your-frontend-url.netlify.app/cancel.html",
+      success_url: "https://donation-stripe.netlify.app/success.html",
+      cancel_url: "https://donation-stripe.netlify.app/cancel.html",
     });
 
     res.json({ url: session.url });
