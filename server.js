@@ -6,7 +6,9 @@ const stripe = require("stripe")(process.env.sk_test_51RWyP9CXBXthrLwjrOjXvt7dOu
 dotenv.config();
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: "https://donation-stripe.netlify.app"
+}));
 app.use(express.json());
 app.use(express.static("public"));
 
