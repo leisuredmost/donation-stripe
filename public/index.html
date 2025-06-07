@@ -20,9 +20,7 @@
       const res = await fetch("https://donation-stripe.onrender.com/create-checkout-session", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ 
-          amount: selectedAmount
-        })
+        body: JSON.stringify({ amount })
       });
 
       const data = await res.json();
