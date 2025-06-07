@@ -14,6 +14,7 @@ app.use(express.static("public"));
 
 app.post("/create-checkout-session", async (req, res) => {
   const { amount } = req.body;
+console.log("Requested amount:", amount);
 
   try {
     const session = await stripe.checkout.sessions.create({
